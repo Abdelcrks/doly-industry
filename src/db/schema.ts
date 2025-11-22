@@ -21,6 +21,30 @@ import {
     "clothing",
     "accessory",
   ]);
+
+
+
+  /* -------- Groupes de tailles -------- */
+
+export const sizeGroups = pgTable("size_groups", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),           // ex: "Chaussures Homme 40–45"
+    code: text("code").notNull().unique(),  // ex: "MEN_SHOES_40_45"
+    description: text("description"),
+  });
+  
+  /* -------- Tailles -------- */
+  
+  export const sizes = pgTable("sizes", {
+    id: serial("id").primaryKey(),
+    sizeGroupId: integer("size_group_id")
+      .notNull()
+      .references(() => sizeGroups.id, { onDelete: "cascade" }),
+    label: text("label").notNull(),      // "40", "41", "XS", "M", "TU", etc.
+    sortOrder: integer("sort_order").notNull(), // pour trier les tailles
+    // Si tu veux être hardcore plus tard : UNIQUE(size_group_id, label) en migration SQL
+  });
+  
   
   /* -------- Marques -------- */
   
