@@ -90,3 +90,30 @@ export const sizeGroups = pgTable("size_groups", {
       .notNull(),
   });
   
+
+  export const productVariants = pgTable("product_variants", {
+    id: serial("id").primaryKey(),
+    productId: integer("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    sizeId: integer("size_id")
+      .notNull()
+      .references(() => sizes.id),
+    color: text("color").notNull(), 
+    priceCents: integer("price_cents"),
+    isAvailable: boolean("is_available").notNull().default(true),
+  });
+  
+
+
+  export const productImages = pgTable("product_images", {
+    id: serial("id").primaryKey(),
+    productId: integer("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    imageUrl: text("image_url").notNull(),
+    altText: text("alt_text"),
+    position: integer("position").notNull().default(1),
+    isMain: boolean("is_main").notNull().default(false),
+  });
+  
